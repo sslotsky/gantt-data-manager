@@ -1,4 +1,11 @@
 import { List } from 'immutable'
+import makeCache from './cache'
+
+let cache = makeCache()
+
+export function resetCache(newCache = makeCache()) {
+  cache = newCache
+}
 
 export class Task {
   constructor(size, ...blockers) {
@@ -11,7 +18,7 @@ export class Task {
       return this.size
     }
 
-    return this.size + this.maxBlockTime()
+    return this.size + cache.get(this, 'maxBlockTime')
   }
 
   maxBlockTime() {
