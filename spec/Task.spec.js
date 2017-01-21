@@ -7,14 +7,11 @@ describe('Task', () => {
     1,
     newTask(2),
     newTask(3),
-    newTask(
-      2,
-      newTask(2)
-    )
+    newTask(2, newTask(2))
   )
 
   describe('waitTime()', () => {
-    it('is calculate from the tree of blockers', () => {
+    it('is calculated from the tree of blockers', () => {
       expect(task.waitTime()).toEqual(5)
     })
   })
@@ -22,9 +19,13 @@ describe('Task', () => {
   describe('caching', () => {
     const cache = makeCache()
     resetCache(cache)
+    const waitTime = task.waitTime()
 
     it('caches the maxBlockTime', () => {
-      const waitTime = task.waitTime()
+      expect(cache.hasKey(task, 'maxBlockTime')).toBe(true)
+    })
+
+    it('stores the correct value', () => {
       const expectedTime = task.size + cache.get(task, 'maxBlockTime')
       expect(waitTime).toEqual(expectedTime);
     })
