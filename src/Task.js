@@ -13,6 +13,10 @@ export class Task {
     this.blockers = List(blockers)
   }
 
+  addBlockers(tasks) {
+    this.blockers = this.blockers.concat(tasks)
+  }
+
   waitTime() {
     if (this.blockers.isEmpty()) {
       return this.size
